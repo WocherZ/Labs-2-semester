@@ -94,54 +94,30 @@ int main() {
                         print_polynom(p3);
                         break;
                     case 4: // 4. Sum first and second polynoms
-                        if ((p1 != NULL) && (p2 != NULL)) {
-                            if ((p1->size == INT_SIZE) && (p2->size == INT_SIZE)) {
-                                p3 = sum_polynom(p1, p2, sum_int_polynom);
-                                printf("Result of sum:\n");
-                                print_polynom(p3);
-                            } else if ((p1->size == DOUBLE_SIZE) && (p2->size == DOUBLE_SIZE)) {
-                                p3 = sum_polynom(p1, p2, sum_double_polynom);
-                                printf("Result of sum:\n");
-                                print_polynom(p3);
-                            } else if (p1->size != p2->size) {
-                                printf("Cast polynoms to same types\n");
-                            }
+                        if (p1 && p2) {
+                            p3 = sum_polynom(p1, p2);
+                            printf("Result of sum polynoms:\n");
+                            print_polynom(p3);
                         } else {
                             if (p1 == NULL) printf("Go back and determine first polynom\n");
                             if (p2 == NULL) printf("Go back and determine second polynom\n");
                         }
                         break;
                     case 5: // 5. Mult first and second polynoms
-                        if ((p1 != NULL) && (p2 != NULL)) {
-                            if ((p1->size == INT_SIZE) && (p2->size == INT_SIZE)) {
-                                p3 = mult_polynoms(p1, p2, mult_int_polynoms);
-                                printf("Result of mult polynoms:\n");
-                                print_polynom(p3);
-                            } else if ((p1->size == DOUBLE_SIZE) && (p2->size == DOUBLE_SIZE)) {
-                                p3 = mult_polynoms(p1, p2, mult_double_polynoms);
-                                printf("Result of mult polynoms:\n");
-                                print_polynom(p3);
-                            } else if (p1->size != p2->size) {
-                                printf("Cast polynoms to same types\n");
-                            }
+                        if (p1 && p2) {
+                            p3 = mult_polynoms(p1, p2);
+                            printf("Result of mult polynoms:\n");
+                            print_polynom(p3);
                         } else {
                             if (p1 == NULL) printf("Go back and determine first polynom\n");
                             if (p2 == NULL) printf("Go back and determine second polynom\n");
                         }
                         break;
                     case 6: // 6. Composition polynoms
-                        if ((p1 != NULL) && (p2 != NULL)) {
-                            if ((p1->size == INT_SIZE) && (p2->size == INT_SIZE)) {
-                                p3 = composition_polynom(p1, p2, composition_int_polynom);
-                                printf("Result of composition polynoms:\n");
-                                print_polynom(p3);
-                            } else if ((p1->size == DOUBLE_SIZE) && (p2->size == DOUBLE_SIZE)) {
-                                p3 = composition_polynom(p1, p2, composition_double_polynom);
-                                printf("Result of composition polynoms:\n");
-                                print_polynom(p3);
-                            } else if (p1->size != p2->size) {
-                                printf("Cast polynoms to same types\n");
-                            }
+                        if (p1 && p2) {
+                            p3 = composition_polynom(p1, p2);
+                            printf("Result of composition polynoms:\n");
+                            print_polynom(p3);
                         } else {
                             if (p1 == NULL) printf("Go back and determine first polynom\n");
                             if (p2 == NULL) printf("Go back and determine second polynom\n");
@@ -151,7 +127,6 @@ int main() {
             } while (c2 != 0);
         }
     } while (c1 != 0);
-
     printf("End!\n");
     return 0;
 }

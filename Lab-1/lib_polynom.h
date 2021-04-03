@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #ifndef LIB_POLYNOM_H
 #define LIB_POLYNOM_H
@@ -14,6 +15,10 @@ struct polynom { //Структура многочлена
     int number;
     int size;
     void *massive; // a0 + a1*x^1 + a2*x^2 + ... +an*x^n
+    //Базовые операции:
+    struct polynom* (*sum)(struct polynom*, struct polynom*); //Сумма многочленов
+    struct polynom* (*mult)(struct polynom*, struct polynom*); //Произведение многочленов
+    struct polynom* (*scalar_mult)(struct polynom*, void*); //Умножение многочлена на скаляр
 };
 
 
@@ -30,15 +35,13 @@ struct polynom *mult_double_scalar(struct polynom *p, void* scalar);
 struct polynom *multScalar(struct polynom *P, void *scalar, struct polynom*(*function_mult_scalar)(struct polynom*, void *scalar));
 struct polynom *sum_int_polynom(struct polynom* P1, struct polynom* P2);
 struct polynom *sum_double_polynom(struct polynom* P1, struct polynom* P2);
-struct polynom *sum_polynom(struct polynom *P1, struct polynom *P2, struct polynom*(*SUMpolynoms)(struct polynom*, struct polynom*));
+struct polynom *sum_polynom(struct polynom *P1, struct polynom *P2);
 struct polynom *create_polynom();
 struct polynom *mult_int_polynoms(struct polynom *P1, struct polynom *P2);
 struct polynom *mult_double_polynoms(struct polynom *P1, struct polynom *P2);
-struct polynom *mult_polynoms(struct polynom *P1, struct polynom *P2, struct polynom*(*function_mult)(struct polynom*, struct polynom*));
+struct polynom *mult_polynoms(struct polynom *P1, struct polynom *P2);
 struct polynom *copy(struct polynom *P);
-struct polynom *degrees_polynom(struct polynom *P, int degree, struct polynom*(*polynom_in_degree)(struct polynom*, int degree)) ;
-struct polynom *composition_int_polynom(struct polynom *F, struct polynom *G);
-struct polynom *composition_double_polynom(struct polynom *F, struct polynom *G);
-struct polynom *composition_polynom(struct polynom *F, struct polynom *G, struct polynom*(*function_composition)(struct polynom *F, struct polynom *G));
+struct polynom *degrees_polynom(struct polynom *P, int degree) ;
+struct polynom *composition_polynom(struct polynom *F, struct polynom *G);
 
 #endif //UNTITLED2_LIB_POLYNOM_H
