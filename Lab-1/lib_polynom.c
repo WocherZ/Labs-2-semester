@@ -141,6 +141,9 @@ struct polynom *sum_int_polynom(struct polynom *P1, struct polynom *P2) {
         result->number = n;
         result->size = INT_SIZE;
         result->massive = (void *) new_mass;
+        result->sum = P1->sum;
+        result->mult = P1->mult;
+        result->scalar_mult = P1->scalar_mult;
     } else {
         printf("Error size! Result of sum integer is NULL!\n");
     }
@@ -162,6 +165,9 @@ struct polynom *sum_double_polynom(struct polynom *P1, struct polynom *P2) {
         result->number = n;
         result->size = DOUBLE_SIZE;
         result->massive = (void *) new_mass;
+        result->sum = P1->sum;
+        result->mult = P1->mult;
+        result->scalar_mult = P1->scalar_mult;
     } else {
         printf("Error size! Result of sum float is NULL!\n");
     }
@@ -236,6 +242,9 @@ struct polynom *mult_int_polynoms(struct polynom *P1, struct polynom *P2) {
             }
         }
         result->massive = (void *) massive;
+        result->sum = P1->sum;
+        result->mult = P1->mult;
+        result->scalar_mult = P1->scalar_mult;
         return result;
     } else {
         printf("Error size! Result of integer mult is NULL!\n");
@@ -268,6 +277,9 @@ struct polynom *mult_double_polynoms(struct polynom *P1, struct polynom *P2) {
             }
         }
         result->massive = (void *) massive;
+        result->sum = P1->sum;
+        result->mult = P1->mult;
+        result->scalar_mult = P1->scalar_mult;
         return result;
     } else {
         printf("Error size! Result of float mult is NULL!\n");
@@ -288,30 +300,12 @@ struct polynom *copy(struct polynom *P) {
     struct polynom *res = malloc(sizeof(struct polynom));
     res->number = P->number;
     res->size = P->size;
-    if (P->size == INT_SIZE) {
-        int *mass = malloc(P->number * INT_SIZE);
-        for (int i = 0; i < P->number; i++) {
-            mass[i] = (int) *((int *) P->massive + i);
-        }
-        res->massive = (void *) mass;
-        res->sum = P->sum;
-        res->mult = P->mult;
-        res->scalar_mult = P->scalar_mult;
-        return res;
-    } else if (P->size == DOUBLE_SIZE) {
-        double *mass = malloc(P->number * DOUBLE_SIZE);
-        for (int i = 0; i < P->number; i++) {
-            mass[i] = (double) *((double *) P->massive + i);
-        }
-        res->massive = (void *) mass;
-        res->sum = P->sum;
-        res->mult = P->mult;
-        res->scalar_mult = P->scalar_mult;
-        return res;
-    } else {
-        printf("Error copy polynom! Wrong size!\n");
-        return NULL;
-    }
+    res->massive = malloc(P->size * P->number);
+    res->massive = memcpy(res->massive, P->massive, P->size * P->number);
+    res->sum = P->sum;
+    res->mult = P->mult;
+    res->scalar_mult = P->scalar_mult;
+    return res;
 }
 
 struct polynom *degrees_polynom(struct polynom *P, int degree) {
@@ -330,6 +324,7 @@ struct polynom *degrees_polynom(struct polynom *P, int degree) {
 struct polynom *composition_polynom(struct polynom *F, struct polynom *G) {
     if (F->size == G->size) {
         struct polynom *result = malloc(sizeof(struct polynom));
+        struct polynom *prom;
         int n = (F->number - 1) * (G->number - 1) + 1;
         result->number = n;
         result->size = F->size;
@@ -338,7 +333,8 @@ struct polynom *composition_polynom(struct polynom *F, struct polynom *G) {
         result->mult = F->mult;
         result->scalar_mult = F->scalar_mult;
         for (int i = 1; i < F->number; i++) {
-            result = sum_polynom(result, multScalar(degrees_polynom(G, i), (F->massive + i), F->scalar_mult));
+            prom = multScalar(degrees_polynom(G, i), (F->massive + i * F->size), F->scalar_mult);
+            result = sum_polynom(result, prom);
         }
         return result;
     } else {
@@ -346,4 +342,3 @@ struct polynom *composition_polynom(struct polynom *F, struct polynom *G) {
         return NULL;
     }
 }
-
