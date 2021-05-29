@@ -62,6 +62,17 @@ public:
         return items[index];
     }
 
+    void Print() const {
+        cout << "{";
+        for (int i = 0; i < GetSize(); ++i) {
+            T value = items[i];
+            cout << value;
+            if (i != GetSize() - 1) cout << ", ";
+        }
+        cout << "}";
+        cout << endl;
+    }
+
     //Destructor
     ~DynamicArray<T>() = default;
 };

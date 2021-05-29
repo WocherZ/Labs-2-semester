@@ -72,14 +72,7 @@ public:
     }
 
     void Print() const override {
-        cout << "{";
-        for (int i = 0; i < GetSize(); ++i) {
-            T value = items[i];
-            cout << value;
-            if (i != GetSize() - 1) cout << ", ";
-        }
-        cout << "}";
-        cout << endl;
+        items.Print();
     }
 
     Sequence<T> *Concat(Sequence<T> &list) override {

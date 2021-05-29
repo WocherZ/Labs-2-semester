@@ -502,8 +502,8 @@ pair<int, int> test_union_string_sets(int n) {
         elements[n] = "a";
     }
 
-    Set<string> array_set(new ArraySequence<string>());
-    Set<string> list_set(new ListSequence<string>());
+    Set<string> array_set(new ArraySequence<string>(elements, n));
+    Set<string> list_set(new ListSequence<string>(elements, n));
 
     auto start_time = chrono::steady_clock::now();
     array_set = array_set.Union(array_set);
@@ -602,8 +602,8 @@ pair<int, int> test_cross_string_sets(int n) {
         elements[n] = "a";
     }
 
-    Set<string> array_set(new ArraySequence<string>());
-    Set<string> list_set(new ListSequence<string>());
+    Set<string> array_set(new ArraySequence<string>(elements, n));
+    Set<string> list_set(new ListSequence<string>(elements, n));
 
     auto start_time = chrono::steady_clock::now();
     array_set = array_set.Cross(array_set);
