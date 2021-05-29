@@ -22,13 +22,17 @@ public:
     }
 
     explicit PriorityQueue(BinaryTree<T> tree) {
-        m_queue = tree;
+        m_queue = tree.Clone();
         size = tree.GetSize();
     }
 
     PriorityQueue(PriorityQueue<T> const &queue) {
-        m_queue = queue.m_queue;
-        size = queue.size;
+        if (this->m_queue != nullptr) {
+            this->DeleteQueue();
+        }
+        this->m_queue = new BinaryTree<T>();
+        this->size = queue->size;
+        this->m_queue = queue->m_queue->Clone();
     }
 
     //Operations
@@ -37,18 +41,20 @@ public:
     }
 
     void Print() {
-        //cout << "Ready to print queue!" << endl;
         m_queue->Print();
-        //cout << "Printed" << endl;
     }
 
-    PriorityQueue<T>& operator=(PriorityQueue<T> *queue) {
-        return queue;
+    PriorityQueue<T>& operator=(const PriorityQueue<int>& queue) {
+        if (this->m_queue != nullptr) {
+            this->DeleteQueue();
+        }
+
+        this->m_queue = new BinaryTree<T>();
+        this->size = queue.size;
+        this->m_queue = queue.m_queue->Clone();
+        return *this;
     }
 
-    PriorityQueue<T>& operator=(PriorityQueue<T> queue) {
-        return queue;
-    }
 
     void Insert(T value) {
         m_queue->Insert(value);
