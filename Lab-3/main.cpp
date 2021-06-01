@@ -5,7 +5,7 @@
 
 int main() {
     int choice = 0;
-    int n = 100;
+    int n = 1000;
     while (choice != 3) {
         cout << "Choose:" << endl;
         cout << "1. Test work" << endl;

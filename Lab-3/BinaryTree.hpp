@@ -115,11 +115,8 @@ public:
 
         while(current && current->m_value != value) {
             prev = current;
-            if(current->m_value > value){
-                current = current->m_left;
-            }
-            else
-                current = current->m_right;
+            if (current->m_value > value) current = current->m_left;
+            else current = current->m_right;
         }
         if (!current)
             return;
@@ -327,6 +324,7 @@ public:
     vector<T> TreeToArray() {
         tree_element<T>* current = m_root;
         vector<T> result;
+        result.reserve(GetSize());
         TreeToArrayRecur(current, result);
 
         return result;
