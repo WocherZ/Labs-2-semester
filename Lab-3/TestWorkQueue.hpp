@@ -4,7 +4,7 @@
 #include "PriorityQueue.hpp"
 
 template<typename T>
-void square(tree_element<T>* current){//(для Map)
+void square(tree_element<T>* current) { //(для Map)
     current->m_value = current->m_value * current->m_value;
 }
 
@@ -20,7 +20,7 @@ bool even_number(tree_element<T>* current) {
 }
 
 template<typename T>
-T sum(tree_element<T>* current,T current_sum){//(для Reduce)
+T sum(tree_element<T>* current,T current_sum) { //(для Reduce)
     return current_sum + current->m_value;
 }
 

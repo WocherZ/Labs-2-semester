@@ -30,9 +30,85 @@ public:
 
 template<typename T>
 class BinaryTree { // Binary tree
-    tree_element<T>* m_root;
+private:
+    tree_element<T>* m_root; // Указатель на корень дерева
+    int size; // Размер дерева
 
-    int size;
+
+    // Вспомогательная рекурентная функция для Map
+    void MapRecur(void(*func)(tree_element<T>*),tree_element<T>* current) {
+        if (current) {
+            func(current);
+            MapRecur(func, current->m_left);
+            MapRecur(func, current->m_right);
+        }
+    }
+
+    // Вспомогательная рекурентная функция для Where
+    void WhereRecur(bool(*func)(tree_element<T>*),tree_element<T>* current) {
+        if (current) {
+            WhereRecur(func, current->m_left);
+            WhereRecur(func, current->m_right);
+            if (!func(current)) {
+                DeleteElement(current->m_value);
+            }
+        }
+    }
+
+    // Вспомогательная рекурентная функция для Reduce
+    void ReduceRecur(T(*func)(tree_element<T>*,T),tree_element<T>* current,T& current_sum) {
+        if (current) {
+            ReduceRecur(func, current->m_left,current_sum);
+            current_sum = func(current, current_sum);
+            ReduceRecur(func, current->m_right,current_sum);
+        }
+    }
+
+    // Вспомогательная рекурентная функция для получения поддерева
+    void UpgradeSubTree(BinaryTree<T>* result,tree_element<T>* current) {
+        if(current){
+            UpgradeSubTree(result,current->m_left);
+            result->Insert(current->m_value);
+            UpgradeSubTree(result,current->m_right);
+        }
+    }
+
+    // Вспомогательная рекурентная функция для представления дерева в виде строки
+    void TreeToStringHelp(tree_element<T>* current,vector<string>& current_str) {
+        if(current){
+            TreeToStringHelp(current->m_left,current_str);
+            current_str.push_back(to_string(current->m_value));
+            TreeToStringHelp(current->m_right,current_str);
+        }
+    }
+
+    // Вспомогательная рекурентная функция для представления дерева в виде массива
+    void TreeToArrayRecur(tree_element<T>* current,vector<T> &array) {
+        if (current) {
+            TreeToArrayRecur(current->m_left, array);
+            array.push_back(current->m_value);
+            TreeToArrayRecur(current->m_right, array);
+        }
+    }
+
+    // Вспомогательная рекурентная функция для балансировки
+    void BalanceRecur(BinaryTree<T>* tree, vector<T> &array, int StartIndex, int EndIndex) {
+        if (EndIndex - StartIndex > 1) {
+            int n = (StartIndex + EndIndex) / 2;
+            tree->Insert(array[n]);
+            tree->BalanceRecur(tree, array, StartIndex, n - 1);
+            tree->BalanceRecur(tree, array, n + 1, EndIndex);
+        } else {
+            if (StartIndex == EndIndex) {
+                tree->Insert(array[StartIndex]);
+            }
+            else {
+                tree->Insert(array[EndIndex]);
+                tree->Insert(array[StartIndex]);
+            }
+        }
+    }
+
 
 public:
     //Constructors
@@ -51,9 +127,14 @@ public:
         size = tree.size;
     }
 
+
     //Operations
     int GetSize() {
         return size;
+    }
+
+    tree_element<T>* GetRoot() {
+        return m_root;
     }
 
     void PrintTree(tree_element<T>* current) {
@@ -69,8 +150,8 @@ public:
         cout << endl;
     }
 
+    // Поиск
     bool Find(T value) {
-
         tree_element<T>* current = m_root;
         while(current && current->m_value != value){
             if(current->m_value > value)
@@ -81,7 +162,7 @@ public:
         return (bool)current;
     }
 
-
+    // Вставка
     void Insert(T value) {
         if (m_root == nullptr) {
             m_root = new tree_element<T>(value);
@@ -109,6 +190,7 @@ public:
         }
     }
 
+    // Удаление элемента
     void DeleteElement(T value) {
         tree_element<T>* current = m_root;
         tree_element<T>* prev = nullptr;
@@ -187,7 +269,7 @@ public:
         }
     }
 
-
+    // Удаление дерева
     void DeleteTree(tree_element<T>* current) {
         if(current) {
             DeleteTree(current->m_left);
@@ -196,6 +278,7 @@ public:
         }
     }
 
+    // Копирование узла
     tree_element<T> *CloneElement(tree_element<T>* element) {
         tree_element<T>* result = new tree_element(element->m_value);
         if (element->m_left) result->m_left = CloneElement(element->m_left);
@@ -205,6 +288,7 @@ public:
         return result;
     }
 
+    // Копирование дерева
     BinaryTree<T> *Clone() {
         auto *result = new BinaryTree<T>();
         result->m_root = CloneElement(m_root);
@@ -218,16 +302,11 @@ public:
         return *this;
     }
 
-    tree_element<T>* GetRoot() {
-        return m_root;
-    }
 
-
-
-    static bool IsEquals(tree_element<T>* first, tree_element<T>* second) {
+    // Равенство двух узлов
+    bool IsEquals(tree_element<T>* first, tree_element<T>* second) {
 
         if (second->m_right == nullptr && second->m_left == nullptr && first->m_value == second->m_value) {
-
             return true;
         }
 
@@ -256,15 +335,9 @@ public:
 
     }
 
-    void UpgradeSubTree(BinaryTree<T>* result,tree_element<T>* current) {
-        if(current){
-            UpgradeSubTree(result,current->m_left);
-            result->Insert(current->m_value);
-            UpgradeSubTree(result,current->m_right);
-        }
-    }
 
 
+    // Поиск поддерева
     bool IsSubtree(BinaryTree<T>* second) {
 
         tree_element<T>* current = m_root;
@@ -279,6 +352,7 @@ public:
     }
 
 
+    // Получение поддерева
     BinaryTree<T>* GetSubTree(T value) {
 
         tree_element<T>* current = m_root;
@@ -291,15 +365,8 @@ public:
         return result;
     }
 
-    void TreeToStringHelp(tree_element<T>* current,vector<string>& current_str) {
-        if(current){
-            TreeToStringHelp(current->m_left,current_str);
-            current_str.push_back(to_string(current->m_value));
-            TreeToStringHelp(current->m_right,current_str);
-        }
-    }
 
-
+    // Представление дерева в виде строки
     string TreeToString() {
 
         tree_element<T>* current = m_root;
@@ -313,14 +380,8 @@ public:
         return result_string;
     }
 
-    void TreeToArrayRecur(tree_element<T>* current,vector<T> &array) {
-        if (current) {
-            TreeToArrayRecur(current->m_left, array);
-            array.push_back(current->m_value);
-            TreeToArrayRecur(current->m_right, array);
-        }
-    }
 
+    // Представление дерева массивом
     vector<T> TreeToArray() {
         tree_element<T>* current = m_root;
         vector<T> result;
@@ -328,32 +389,6 @@ public:
         TreeToArrayRecur(current, result);
 
         return result;
-    }
-
-    void MapRecur(void(*func)(tree_element<T>*),tree_element<T>* current) {
-        if (current) {
-            func(current);
-            MapRecur(func, current->m_left);
-            MapRecur(func, current->m_right);
-        }
-    }
-
-    void WhereRecur(bool(*func)(tree_element<T>*),tree_element<T>* current) {
-        if (current) {
-            WhereRecur(func, current->m_left);
-            WhereRecur(func, current->m_right);
-            if (!func(current)) {
-                DeleteElement(current->m_value);
-            }
-        }
-    }
-
-    void ReduceRecur(T(*func)(tree_element<T>*,T),tree_element<T>* current,T& current_sum) {
-        if (current) {
-            ReduceRecur(func, current->m_left,current_sum);
-            current_sum = func(current, current_sum);
-            ReduceRecur(func, current->m_right,current_sum);
-        }
     }
 
     // Map
@@ -375,6 +410,15 @@ public:
         ReduceRecur(func,current,current_sum);
         return current_sum;
     }
+
+    // Балансировка
+    BinaryTree<T>* Balance() {
+        vector<T> arrayTree = TreeToArray();
+        BinaryTree<T>* newtree = new BinaryTree<T>();
+        newtree->BalanceRecur(newtree, arrayTree, 0, GetSize()-1);
+        return newtree;
+    }
+
 
     //Destructor
     ~BinaryTree() {
