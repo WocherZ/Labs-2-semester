@@ -6,13 +6,12 @@
 #include <chrono>
 #include "PriorityQueue.hpp"
 
+using namespace std;
 
 int randomRange(int low, int high)
 {
     return rand() % (high - low + 1) + low;
 }
-
-using namespace std;
 
 
 void PrintTimeTestResult(const string &NameTest, int time) {
@@ -39,7 +38,7 @@ int TestInsertDoubleElement(int n) {
 
     auto start_time = chrono::steady_clock::now();
     for (int i = 0; i < n; i++) {
-        queue1->Insert(i);
+        queue1->Insert(i * 0.1);
     }
     auto end_time = chrono::steady_clock::now();
     int time = chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count();
@@ -80,11 +79,11 @@ int TestFindDoubleElement(int n) {
     auto queue1 = new PriorityQueue<double>();
 
     for (int i = 0; i < n; i++) {
-        queue1->Insert(i);
+        queue1->Insert(i * 0.1);
     }
 
     auto start_time = chrono::steady_clock::now();
-    queue1->Find(n - 1);
+    queue1->Find((n - 1) * 0.1);
     auto end_time = chrono::steady_clock::now();
     int time = chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count();
 
@@ -134,13 +133,13 @@ int TestFindDoubleSubSequence(int n) {
     auto queue1 = new PriorityQueue<double>();
 
     for (int i = 0; i < n; i++) {
-        queue1->Insert(i);
+        queue1->Insert(i * 0.1);
     }
 
     auto queue2 = new PriorityQueue<double>();
 
     for (int i = 0; i < n; i++) {
-        queue2->Insert(i);
+        queue2->Insert(i * 0.1);
     }
 
     auto start_time = chrono::steady_clock::now();
@@ -192,7 +191,7 @@ int TestGiveDoubleSubSequence(int n) {
     auto queue1 = new PriorityQueue<double>();
 
     for (int i = 0; i < n; i++) {
-        queue1->Insert(i);
+        queue1->Insert(i * 0.1);
     }
 
     auto start_time = chrono::steady_clock::now();
@@ -218,6 +217,52 @@ int TestGiveCharSubSequence(int n) {
     return time;
 }
 
+int TestDeleteIntElement(int n) {
+    auto queue1 = new PriorityQueue<int>();
+
+    for (int i = 0; i < n; i++) {
+        queue1->Insert(i);
+    }
+
+    auto start_time = chrono::steady_clock::now();
+    queue1->DeleteElement(0);
+    auto end_time = chrono::steady_clock::now();
+    int time = chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count();
+
+    return time;
+}
+
+int TestDeleteDoubleElement(int n) {
+    auto queue1 = new PriorityQueue<double>();
+
+    for (int i = 0; i < n; i++) {
+        queue1->Insert(i * 0.1);
+    }
+
+    auto start_time = chrono::steady_clock::now();
+    queue1->DeleteElement(0.0);
+    auto end_time = chrono::steady_clock::now();
+    int time = chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count();
+
+    return time;
+}
+
+int TestDeleteCharElement(int n) {
+    auto queue1 = new PriorityQueue<char>();
+    srand(time(NULL));
+
+    for (int i = 0; i < n; i++) {
+        const char sim = randomRange('a', 'z');
+        queue1->Insert(sim);
+    }
+
+    auto start_time = chrono::steady_clock::now();
+    queue1->DeleteElement('a');
+    auto end_time = chrono::steady_clock::now();
+    int time = chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count();
+
+    return time;
+}
 
 void TimeTestQueue(int n) {
     PrintTimeTestResult("Insert int element", TestInsertIntElement(n));
@@ -235,6 +280,10 @@ void TimeTestQueue(int n) {
     PrintTimeTestResult("Give int subsequence", TestGiveIntSubSequence(n));
     PrintTimeTestResult("Give double subsequence", TestGiveDoubleSubSequence(n));
     PrintTimeTestResult("Give char subsequence", TestGiveCharSubSequence(n));
+
+    PrintTimeTestResult("Delete int element", TestDeleteIntElement(n));
+    PrintTimeTestResult("Delete double element", TestDeleteDoubleElement(n));
+    PrintTimeTestResult("Delete char element", TestDeleteCharElement(n));
 
 }
 

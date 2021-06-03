@@ -2,17 +2,19 @@
 #include "TestWorkQueue.hpp"
 #include "TimeTestQueue.hpp"
 #include "TestWorkBinaryTree.hpp"
+#include "TimeTestBinaryTree.hpp"
 
 
 int main() {
     int choice = 0;
     int n = 1000;
-    while (choice != 4) {
+    while (choice != 5) {
         cout << "Choose:" << endl;
         cout << "1. Test work priority queue" << endl;
         cout << "2. Time test priority queue" << endl;
         cout << "3. Test work binary tree" << endl;
-        cout << "4. Exit" << endl;
+        cout << "4. Time test binary tree" << endl;
+        cout << "5. Exit" << endl;
         cin >> choice;
 
         switch(choice) {
@@ -29,6 +31,10 @@ int main() {
                 break;
             }
             case 4: {
+                TimeTestBinaryTree(n);
+                break;
+            }
+            case 5: {
                 break;
             }
             default: {

@@ -137,6 +137,10 @@ public:
         return m_root;
     }
 
+    T GetRootValue() {
+        return m_root->m_value;
+    }
+
     void PrintTree(tree_element<T>* current) {
         if (current) {
             if (current->m_left) PrintTree(current->m_left);
@@ -169,7 +173,7 @@ public:
             size = 1;
         } else {
             tree_element<T>* current = m_root;
-            while(current && current->m_value != value) {
+            while(current || current->m_value != value) {
                 if (current->m_value > value) {
                     if (current->m_left) current = current->m_left;
                     else {
@@ -191,82 +195,53 @@ public:
     }
 
     // Удаление элемента
-    void DeleteElement(T value) {
+    void DeleteElement(T key)
+    {
         tree_element<T>* current = m_root;
-        tree_element<T>* prev = nullptr;
-
-        while(current && current->m_value != value) {
-            prev = current;
-            if (current->m_value > value) current = current->m_left;
-            else current = current->m_right;
+        tree_element<T>* parent = NULL;
+        while (current && current->m_value != key)
+        {
+            parent = current;
+            if (current->m_value > key)
+            {
+                current = current->m_left;
+            }
+            else
+            {
+                current = current->m_right;
+            }
         }
         if (!current)
             return;
+        if (current->m_left == NULL)
+        {
 
-
-        if(prev->m_right == current) {
-            if (current->m_right == nullptr && current->m_left == nullptr){
-                prev->m_right = nullptr;
-                delete[] current;
-                size--;
-                return;
-            }
-            if (current->m_left == nullptr) {
-                prev->m_right = current->m_right;
-                delete[] current;
-                size--;
-                return;
-            }
-            if (current->m_right == nullptr) {
-                prev->m_right = current->m_left;
-                delete[] current;
-                size--;
-                return;
-            }
-        }
-
-        if (prev->m_left == current) {
-            if (current->m_right == nullptr && current->m_left == nullptr) {
-                prev->m_left = nullptr;
-                delete[] current;
-                size--;
-                return;
-            }
-            if (current->m_left == nullptr) {
-                prev->m_left = current->m_right;
-                delete[] current;
-                size--;
-                return;
-            }
-            if (current->m_right == nullptr) {
-                prev->m_left = current->m_left;
-                delete[] current;
-                size--;
-                return;
-            }
-        }
-
-        tree_element<T>* tmp = current->m_right;
-        while (tmp->m_left) tmp = tmp->m_left;
-
-        T minimum = tmp->m_value;
-
-
-
-        if (prev->m_left == current) {
-            DeleteElement(tmp->m_value);
-            prev->m_left = new tree_element<T>(minimum,current->m_left,current->m_right);
-            delete[] current;
+            if (parent && parent->m_left == current)
+                parent->m_left = current->m_right;
+            if (parent && parent->m_right == current)
+                parent->m_right = current->m_right;
             size--;
+            delete current;
             return;
         }
-        if (prev->m_right == current) {
-            DeleteElement(tmp->m_value);
-            prev->m_right = new tree_element<T>(minimum,current->m_left,current->m_right);
-            delete[] current;
+        if (current->m_right == NULL)
+        {
+
+            if (parent && parent->m_left == current)
+                parent->m_left = current->m_left;
+            if (parent && parent->m_right == current)
+                parent->m_right = current->m_left;
             size--;
+            delete current;
             return;
         }
+
+        tree_element<T>* replace = current->m_right;
+        while (replace->m_left)
+            replace = replace->m_left;
+        int replace_value = replace->m_value;
+        DeleteElement(replace_value);
+        current->m_value = replace_value;
     }
 
     // Удаление дерева
@@ -334,7 +309,6 @@ public:
             return IsEquals(first->m_right,second->m_right);
 
     }
-
 
 
     // Поиск поддерева

@@ -56,8 +56,6 @@ void TestIntTree() {
 
     cout << "Use sum elements(Reduce): ";
     cout << tree2->Reduce(sum) << endl;
-
-    tree1->Balance();
 }
 
 
@@ -106,7 +104,7 @@ void TestDoubleTree() {
     cout << "Use sum elements(Reduce): ";
     cout << tree2->Reduce(sum) << endl;
 
-    tree1->Balance();
+
 }
 
 void TestCharTree() {
@@ -138,7 +136,6 @@ void TestCharTree() {
 
     cout << "Second tree is subtree first tree - " << print_bool(tree1->IsSubtree(tree2)) << endl;
 
-    tree1->Balance();
 }
 
 
