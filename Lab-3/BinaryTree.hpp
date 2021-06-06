@@ -491,7 +491,14 @@ public:
         return result;
     }
 
-
+    // Печать обхода дерева
+    void Print_Round(vector<T>*(*FuncRound)()) {
+        vector<T> array = FuncRound();
+        for (int i = 0; i < GetSize(); i++) {
+            cout << array[i] << " ";
+        }
+        cout << endl;
+    }
 
     //Destructor
     ~BinaryTree() {
