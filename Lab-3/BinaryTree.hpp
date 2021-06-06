@@ -393,6 +393,105 @@ public:
         return newtree;
     }
 
+    // Обходы
+    // B - base(корень), L - левое поддерево, R - правое поддерево
+    void HelpRound_BLR(tree_element<T>* current, vector<T> &array) {
+        if (current) {
+            array.push_back(current->m_value);
+            HelpRound_BLR(current->m_left, array);
+            HelpRound_BLR(current->m_right, array);
+        }
+    }
+
+    // Корень-лево-право
+    vector<T> Round_BLR() {
+        tree_element<T>* current = m_root;
+        vector<T> result;
+        HelpRound_BLR(current, result);
+        return result;
+    }
+
+    void HelpRound_BRL(tree_element<T>* current, vector<T> &array) {
+        if (current) {
+            array.push_back(current->m_value);
+            HelpRound_BRL(current->m_right, array);
+            HelpRound_BRL(current->m_left, array);
+        }
+    }
+
+    // Корень-право-лево
+    vector<T> Round_BRL() {
+        tree_element<T>* current = m_root;
+        vector<T> result;
+        HelpRound_BRL(current, result);
+        return result;
+    }
+
+    void HelpRound_RBL(tree_element<T>* current, vector<T> &array) {
+        if (current) {
+            HelpRound_RBL(current->m_right, array);
+            array.push_back(current->m_value);
+            HelpRound_RBL(current->m_left, array);
+        }
+    }
+
+    // Право-корень-лево
+    vector<T> Round_RBL() {
+        tree_element<T>* current = m_root;
+        vector<T> result;
+        HelpRound_RBL(current, result);
+        return result;
+    }
+
+    void HelpRound_RLB(tree_element<T>* current, vector<T> &array) {
+        if (current) {
+            HelpRound_RLB(current->m_right, array);
+            HelpRound_RLB(current->m_left, array);
+            array.push_back(current->m_value);
+        }
+    }
+
+    // Право-лево-корень
+    vector<T> Round_RLB() {
+        tree_element<T>* current = m_root;
+        vector<T> result;
+        HelpRound_RLB(current, result);
+        return result;
+    }
+
+    void HelpRound_LBR(tree_element<T>* current, vector<T> &array) {
+        if (current) {
+            HelpRound_LBR(current->m_left, array);
+            array.push_back(current->m_value);
+            HelpRound_LBR(current->m_right, array);
+        }
+    }
+
+    // Лево-корень-право
+    vector<T> Round_LBR() {
+        tree_element<T>* current = m_root;
+        vector<T> result;
+        HelpRound_LBR(current, result);
+        return result;
+    }
+
+    void HelpRound_LRB(tree_element<T>* current, vector<T> &array) {
+        if (current) {
+            HelpRound_LRB(current->m_left, array);
+            HelpRound_LRB(current->m_right, array);
+            array.push_back(current->m_value);
+        }
+    }
+
+    // Лево-право-корень
+    vector<T> Round_LRB() {
+        tree_element<T>* current = m_root;
+        vector<T> result;
+        HelpRound_LRB(current, result);
+        return result;
+    }
+
+
 
     //Destructor
     ~BinaryTree() {
