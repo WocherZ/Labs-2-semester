@@ -4,6 +4,7 @@
 #include <chrono>
 #include "sets.hpp"
 
+
 void print_result(const string &Test, pair<int, int> times) {
     int array_time = times.first;
     int list_time = times.second;
@@ -624,10 +625,10 @@ pair<int, int> test_cross_string_sets(int n) {
 pair<int, int> test_inset_int_element(int n) {
     int elements[n];
     for (int i = 0; i < n; i++) {
-        elements[n] = i;
+        elements[i] = i;
     }
     int item = n;
-    elements[n - 1] = item;
+    //elements[n - 1] = item;
 
     Set<int> array_set(new ArraySequence<int>(elements, n));
     Set<int> list_set(new ListSequence<int>(elements, n));
@@ -651,10 +652,10 @@ pair<int, int> test_inset_int_element(int n) {
 pair<int, int> test_inset_double_element(int n) {
     double elements[n];
     for (int i = 0; i < n; i++) {
-        elements[n] = i;
+        elements[i] = i;
     }
     double item = n;
-    elements[n - 1] = item;
+    //elements[n - 1] = item;
 
     Set<double> array_set(new ArraySequence<double>(elements, n));
     Set<double> list_set(new ListSequence<double>(elements, n));
@@ -678,10 +679,10 @@ pair<int, int> test_inset_double_element(int n) {
 pair<int, int> test_inset_char_element(int n) {
     char elements[n];
     for (int i = 0; i < n; i++) {
-        elements[n] = 'a';
+        elements[i] = 'a';
     }
     char item = 'b';
-    elements[n - 1] = item;
+    //elements[n - 1] = item;
     Set<char> array_set(new ArraySequence<char>(elements, n));
     Set<char> list_set(new ListSequence<char>(elements, n));
 
@@ -705,10 +706,10 @@ pair<int, int> test_inset_char_element(int n) {
 pair<int, int> test_inset_string_element(int n) {
     string elements[n];
     for (int i = 0; i < n; i++) {
-        elements[n] = "a";
+        elements[i] = "a";
     }
     string item = "b";
-    elements[n - 1] = item;
+    //elements[n - 1] = item;
     Set<string> array_set(new ArraySequence<string>(elements, n));
     Set<string> list_set(new ListSequence<string>(elements, n));
 
@@ -756,7 +757,7 @@ void Test_Time_Set(int n) {
     print_result("Union CHAR sets", test_union_char_sets(n));
     print_result("Union STRING sets", test_union_string_sets(n));
 
-    print_result("Cross INT sets", test_create_int_set(n));
+    print_result("Cross INT sets", test_cross_int_sets(n));
     print_result("Cross DOUBLE sets", test_cross_double_sets(n));
     print_result("Cross CHAR sets", test_cross_char_sets(n));
     print_result("Cross STRING sets", test_cross_string_sets(n));

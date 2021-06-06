@@ -1,6 +1,7 @@
 #include <iostream>
 #include "test_sets.hpp"
 #include "time_test_sets.hpp"
+#include "TimeTestStlSet.h"
 
 using namespace std;
 
@@ -8,9 +9,9 @@ using namespace std;
 int main() {
     int choice = 0, type_test = 0;
 
-    while (choice != 3) {
+    while (choice != 4) {
         cout << endl << "Select an action:" << endl;
-        cout << "1. Run tests" << endl << "2. Run time test" << endl << "3. Exit" << endl;
+        cout << "1. Run tests" << endl << "2. Run time test" << endl << "3. Run time test stl set" << endl << "4. Exit" << endl;
         cin >> choice;
         cout << endl;
         switch (choice) {
@@ -53,6 +54,10 @@ int main() {
                 break;
             }
             case 3: {
+                Test_Time_Stl_Set(1000);
+                break;
+            }
+            case 4: {
                 break;
             }
             default: {
